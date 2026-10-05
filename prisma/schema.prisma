@@ -1,0 +1,232 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String     @id @default(cuid())
+  name      String
+  createdAt DateTime   @default(now())
+  projects  Project[]
+  progress  Progress[]
+}
+
+model Month {
+  id     String @id @default(cuid())
+  number Int    @unique // 1-3
+  title  String
+  weeks  Week[]
+}
+
+model Week {
+  id      String      @id @default(cuid())
+  number  Int         @unique // 1-12
+  title   String
+  monthId String
+  month   Month       @relation(fields: [monthId], references: [id])
+  days    LearningDay[]
+}
+
+enum DayStatus {
+  LOCKED
+  UPCOMING
+  CURRENT
+  COMPLETED
+}
+
+model LearningDay {
+  id           String       @id @default(cuid())
+  dayNumber    Int          @unique // 1-90
+  title        String
+  objective    String
+  whyItMatters String
+  status       DayStatus    @default(LOCKED)
+  weekId       String
+  week         Week         @relation(fields: [weekId], references: [id])
+  topics       Topic[]
+  tasks        Task[]
+  resources    Resource[]
+  skills       SkillOnDay[]
+  content      Content[]
+  evidence     Evidence[]
+}
+
+model Topic {
+  id    String      @id @default(cuid())
+  name  String
+  dayId String
+  day   LearningDay @relation(fields: [dayId], references: [id], onDelete: Cascade)
+}
+
+model Task {
+  id          String            @id @default(cuid())
+  label       String
+  completed   Boolean           @default(false)
+  dayId       String?
+  day         LearningDay?      @relation(fields: [dayId], references: [id], onDelete: Cascade)
+  milestoneId String?
+  milestone   ProjectMilestone? @relation(fields: [milestoneId], references: [id], onDelete: Cascade)
+}
+
+model Resource {
+  id    String      @id @default(cuid())
+  title String
+  url   String?
+  dayId String
+  day   LearningDay @relation(fields: [dayId], references: [id], onDelete: Cascade)
+}
+
+enum SkillState {
+  NOT_STARTED
+  LEARNING
+  PRACTICED
+  BUILT
+  EVALUATED
+  MASTERED
+}
+
+model Skill {
+  id       String           @id @default(cuid())
+  name     String           @unique
+  category String // Software Engineering | AI Systems | Production
+  state    SkillState       @default(NOT_STARTED)
+  days     SkillOnDay[]
+  projects SkillOnProject[]
+  evidence Evidence[]
+  content  Content[]
+}
+
+model SkillOnDay {
+  skillId String
+  dayId   String
+  skill   Skill       @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  day     LearningDay @relation(fields: [dayId], references: [id], onDelete: Cascade)
+
+  @@id([skillId, dayId])
+}
+
+enum ProjectStatus {
+  PLANNED
+  IN_PROGRESS
+  TESTING
+  SHIPPED
+}
+
+model Project {
+  id              String            @id @default(cuid())
+  name            String
+  description     String
+  businessProblem String
+  solution        String
+  techStack       String[]
+  status          ProjectStatus     @default(PLANNED)
+  githubUrl       String?
+  liveUrl         String?
+  userId          String
+  user            User              @relation(fields: [userId], references: [id])
+  skills          SkillOnProject[]
+  milestones      ProjectMilestone[]
+  evidence        Evidence[]
+  content         Content[]
+}
+
+model SkillOnProject {
+  skillId   String
+  projectId String
+  skill     Skill   @relation(fields: [skillId], references: [id], onDelete: Cascade)
+  project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@id([skillId, projectId])
+}
+
+model ProjectMilestone {
+  id        String     @id @default(cuid())
+  order     Int
+  title     String
+  completed Boolean    @default(false)
+  notes     String?
+  projectId String
+  project   Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  tasks     Task[]
+  evidence  Evidence[]
+}
+
+model Evidence {
+  id          String            @id @default(cuid())
+  type        String // github | demo | article | video | deployment | evaluation
+  url         String?
+  description String?
+  dayId       String?
+  day         LearningDay?      @relation(fields: [dayId], references: [id])
+  skillId     String?
+  skill       Skill?            @relation(fields: [skillId], references: [id])
+  projectId   String?
+  project     Project?          @relation(fields: [projectId], references: [id])
+  milestoneId String?
+  milestone   ProjectMilestone? @relation(fields: [milestoneId], references: [id])
+  createdAt   DateTime          @default(now())
+}
+
+enum Platform {
+  TIKTOK
+  INSTAGRAM
+  LINKEDIN
+  YOUTUBE
+}
+
+enum ContentStatus {
+  IDEA
+  DRAFT
+  READY
+  PUBLISHED
+}
+
+model Content {
+  id          String        @id @default(cuid())
+  title       String
+  hook        String?
+  problem     String?
+  solution    String?
+  demo        String?
+  cta         String?
+  platform    Platform
+  status      ContentStatus @default(IDEA)
+  publishedAt DateTime?
+  url         String?
+  notes       String?
+  dayId       String?
+  day         LearningDay?  @relation(fields: [dayId], references: [id])
+  skillId     String?
+  skill       Skill?        @relation(fields: [skillId], references: [id])
+  projectId   String?
+  project     Project?      @relation(fields: [projectId], references: [id])
+}
+
+model Milestone {
+  id                  String    @id @default(cuid())
+  title               String
+  description         String?
+  unlockDayThreshold  Int? // hari ke berapa milestone ini otomatis terbuka
+  unlocked            Boolean   @default(false)
+  unlockedAt          DateTime?
+}
+
+model Progress {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  date      DateTime @default(now())
+  dayNumber Int
+  note      String?
+}
+
+model Activity {
+  id        String   @id @default(cuid())
+  type      String // task_completed | evidence_added | content_published | milestone_unlocked
+  message   String
+  createdAt DateTime @default(now())
+}

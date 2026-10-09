@@ -42,16 +42,11 @@ export async function getCurrentDay() {
 }
 
 export async function toggleTask(taskId: string, completed: boolean) {
-  return prisma.task.update({
-    where: { id: taskId },
-    data: { completed },
-  });
+  return prisma.task.update({ where: { id: taskId }, data: { completed } });
 }
 
 export async function addTask(dayId: string, label: string) {
-  return prisma.task.create({
-    data: { dayId, label, completed: false },
-  });
+  return prisma.task.create({ data: { dayId, label, completed: false } });
 }
 
 export async function deleteTask(taskId: string) {
@@ -64,9 +59,7 @@ export async function completeDayAndAdvance(dayNumber: number) {
     data: { status: "COMPLETED" },
   });
 
-  const nextDay = await prisma.learningDay.findUnique({
-    where: { dayNumber: dayNumber + 1 },
-  });
+  const nextDay = await prisma.learningDay.findUnique({ where: { dayNumber: dayNumber + 1 } });
 
   if (nextDay && nextDay.status === "LOCKED") {
     await prisma.learningDay.update({
@@ -76,10 +69,7 @@ export async function completeDayAndAdvance(dayNumber: number) {
   }
 
   await prisma.activity.create({
-    data: {
-      type: "task_completed",
-      message: `Hari ${dayNumber} ditandai selesai`,
-    },
+    data: { type: "task_completed", message: `Hari ${dayNumber} ditandai selesai` },
   });
 
   await checkAndUnlockMilestones(dayNumber);

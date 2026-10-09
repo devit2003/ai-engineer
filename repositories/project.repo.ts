@@ -35,9 +35,7 @@ export async function createProject(data: {
   techStack: string[];
 }) {
   const user = await getOrCreateDemoUser();
-  return prisma.project.create({
-    data: { ...data, userId: user.id },
-  });
+  return prisma.project.create({ data: { ...data, userId: user.id } });
 }
 
 export async function updateProjectStatus(id: string, status: string) {

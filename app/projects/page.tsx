@@ -11,7 +11,7 @@ export default async function ProjectsPage() {
 
   return (
     <div>
-      <PageHeader title="Proyek" description="Proyek engineering nyata — masalah, solusi, tech stack, milestone" />
+      <PageHeader title="Proyek" description="Proyek engineering nyata: masalah, solusi, tech stack, milestone" />
 
       <AddProjectForm />
 

@@ -25,17 +25,16 @@ export function MilestoneList({ projectId, milestones }: { projectId: string; mi
           <div className="flex items-center gap-2.5">
             <button
               disabled={isPending}
-              onClick={() =>
-                startTransition(() => toggleMilestoneAction(projectId, m.id, !m.completed))
-              }
+              onClick={() => startTransition(() => toggleMilestoneAction(projectId, m.id, !m.completed))}
               className={`flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full border ${
                 m.completed ? "border-success bg-success" : "border-border-strong"
               }`}
+              aria-label={m.completed ? "Tandai belum selesai" : "Tandai selesai"}
             >
               {m.completed && <Check size={11} className="text-white" strokeWidth={3} />}
             </button>
             <span className={`text-[13px] ${m.completed ? "text-muted-dim line-through" : "text-foreground"}`}>
-              {m.order.toString().padStart(2, "0")} — {m.title}
+              {m.order.toString().padStart(2, "0")} {m.title}
             </span>
           </div>
 
@@ -45,18 +44,15 @@ export function MilestoneList({ projectId, milestones }: { projectId: string; mi
                 <li key={task.id} className="flex items-center gap-2 text-[12px]">
                   <button
                     disabled={isPending}
-                    onClick={() =>
-                      startTransition(() => toggleMilestoneTaskAction(projectId, task.id, !task.completed))
-                    }
+                    onClick={() => startTransition(() => toggleMilestoneTaskAction(projectId, task.id, !task.completed))}
                     className={`flex h-3.5 w-3.5 flex-shrink-0 items-center justify-center rounded border ${
                       task.completed ? "border-accent bg-accent" : "border-border-strong"
                     }`}
+                    aria-label={task.completed ? "Tandai belum selesai" : "Tandai selesai"}
                   >
                     {task.completed && <Check size={9} className="text-white" strokeWidth={3} />}
                   </button>
-                  <span className={task.completed ? "text-muted-dim line-through" : "text-muted"}>
-                    {task.label}
-                  </span>
+                  <span className={task.completed ? "text-muted-dim line-through" : "text-muted"}>{task.label}</span>
                 </li>
               ))}
             </ul>
@@ -79,18 +75,15 @@ export function MilestoneList({ projectId, milestones }: { projectId: string; mi
                 placeholder="Task baru..."
                 className="flex-1 rounded-md border border-border bg-background px-2 py-1 text-[12px] text-foreground placeholder:text-muted-dim focus:border-accent"
               />
-              <button type="submit" className="text-accent">
+              <button type="submit" className="text-accent" aria-label="Simpan task">
                 <Plus size={14} />
               </button>
-              <button type="button" onClick={() => setOpenTaskInput(null)} className="text-muted-dim">
+              <button type="button" onClick={() => setOpenTaskInput(null)} className="text-muted-dim" aria-label="Batal">
                 <X size={14} />
               </button>
             </form>
           ) : (
-            <button
-              onClick={() => setOpenTaskInput(m.id)}
-              className="ml-6 mt-2 text-[11px] text-muted-dim hover:text-accent"
-            >
+            <button onClick={() => setOpenTaskInput(m.id)} className="ml-6 mt-2 text-[11px] text-muted-dim hover:text-accent">
               + tambah task
             </button>
           )}

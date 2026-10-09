@@ -6,10 +6,10 @@ import { getRecentActivity } from "@/repositories/activity.repo";
 type Activity = Awaited<ReturnType<typeof getRecentActivity>>[number];
 
 const TYPE_LABEL: Record<string, string> = {
-  task_completed: "Hari Selesai",
-  evidence_added: "Bukti Ditambahkan",
-  content_published: "Konten Terbit",
-  milestone_unlocked: "Milestone Terbuka",
+  task_completed: "Hari selesai",
+  evidence_added: "Bukti ditambahkan",
+  content_published: "Konten terbit",
+  milestone_unlocked: "Milestone terbuka",
 };
 
 function formatDate(date: Date) {
@@ -19,6 +19,7 @@ function formatDate(date: Date) {
     year: "numeric",
     hour: "2-digit",
     minute: "2-digit",
+    timeZone: "Asia/Jakarta",
   }).format(date);
 }
 
@@ -27,12 +28,12 @@ export default async function JourneyPage() {
 
   return (
     <div>
-      <PageHeader title="Perjalanan" description="Linimasa 90 hari dan aktivitas terbaru" />
+      <PageHeader title="Perjalanan" description="Linimasa aktivitas belajarmu" />
 
       {activities.length === 0 ? (
         <EmptyState
           title="Belum ada aktivitas"
-          description="Linimasa akan terisi begitu kamu menandai hari selesai, menambah bukti, atau menerbitkan konten."
+          description="Linimasa terisi begitu kamu menandai hari selesai atau membuka milestone."
         />
       ) : (
         <Card className="p-5">

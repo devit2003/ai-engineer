@@ -6,35 +6,24 @@ import { toggleTaskAction, addTaskAction, deleteTaskAction } from "@/app/roadmap
 
 type Task = { id: string; label: string; completed: boolean };
 
-export function TaskChecklist({
-  tasks,
-  dayId,
-  dayNumber,
-}: {
-  tasks: Task[];
-  dayId: string;
-  dayNumber: number;
-}) {
+export function TaskChecklist({ tasks, dayId, dayNumber }: { tasks: Task[]; dayId: string; dayNumber: number }) {
   const [isPending, startTransition] = useTransition();
   const [newTask, setNewTask] = useState("");
 
   return (
     <div>
       {tasks.length === 0 ? (
-        <p className="mb-3 text-[13px] text-muted-dim">Belum ada task untuk hari ini — tambahkan di bawah.</p>
+        <p className="mb-3 text-[13px] text-muted-dim">Belum ada task untuk hari ini. Tambahkan di bawah.</p>
       ) : (
         <ul className="mb-3 space-y-1">
           {tasks.map((task) => (
             <li key={task.id} className="group flex items-center gap-2.5 rounded-md px-2 py-1.5 hover:bg-surface-hover">
               <button
                 disabled={isPending}
-                onClick={() =>
-                  startTransition(() => {
-                    toggleTaskAction(task.id, !task.completed, dayNumber);
-                  })
-                }
+                onClick={() => startTransition(() => toggleTaskAction(task.id, !task.completed, dayNumber))}
                 className="flex h-4 w-4 flex-shrink-0 items-center justify-center rounded border border-border-strong transition-colors disabled:opacity-60"
                 style={task.completed ? { backgroundColor: "var(--accent)", borderColor: "var(--accent)" } : undefined}
+                aria-label={task.completed ? "Tandai belum selesai" : "Tandai selesai"}
               >
                 {task.completed && (
                   <svg width="10" height="10" viewBox="0 0 10 10" fill="none">
@@ -43,25 +32,15 @@ export function TaskChecklist({
                 )}
               </button>
               <span
-                onClick={() =>
-                  startTransition(() => {
-                    toggleTaskAction(task.id, !task.completed, dayNumber);
-                  })
-                }
-                className={`flex-1 cursor-pointer text-[13px] ${
-                  task.completed ? "text-muted-dim line-through" : "text-foreground"
-                }`}
+                onClick={() => startTransition(() => toggleTaskAction(task.id, !task.completed, dayNumber))}
+                className={`flex-1 cursor-pointer text-[13px] ${task.completed ? "text-muted-dim line-through" : "text-foreground"}`}
               >
                 {task.label}
               </span>
               <button
                 disabled={isPending}
-                onClick={() =>
-                  startTransition(() => {
-                    deleteTaskAction(task.id, dayNumber);
-                  })
-                }
-                className="opacity-0 text-muted-dim transition-opacity hover:text-error group-hover:opacity-100"
+                onClick={() => startTransition(() => deleteTaskAction(task.id, dayNumber))}
+                className="text-muted-dim opacity-0 transition-opacity hover:text-error group-hover:opacity-100 focus-visible:opacity-100"
                 aria-label="Hapus task"
               >
                 <X size={14} />
@@ -75,9 +54,7 @@ export function TaskChecklist({
         onSubmit={(e) => {
           e.preventDefault();
           if (!newTask.trim()) return;
-          startTransition(() => {
-            addTaskAction(dayId, newTask, dayNumber);
-          });
+          startTransition(() => addTaskAction(dayId, newTask, dayNumber));
           setNewTask("");
         }}
         className="flex items-center gap-2"

@@ -38,9 +38,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
         <p className="text-[13px] font-medium text-foreground">{project.name}</p>
         <StatusBadge status={STATUS_VARIANT[project.status]}>{STATUS_LABEL[project.status]}</StatusBadge>
       </div>
-      {project.description && (
-        <p className="mb-2 line-clamp-2 text-[12px] text-muted-dim">{project.description}</p>
-      )}
+      {project.description && <p className="mb-2 line-clamp-2 text-[12px] text-muted-dim">{project.description}</p>}
       <div className="flex flex-wrap gap-1.5">
         {project.techStack.slice(0, 4).map((tech) => (
           <span key={tech} className="rounded-full border border-border px-2 py-0.5 text-[10px] text-muted">

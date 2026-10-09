@@ -14,10 +14,7 @@ export default async function RoadmapPage() {
   if (months.length === 0) {
     return (
       <div>
-        <PageHeader
-          title="Roadmap 90 Hari"
-          description="Bulan 1: Fondasi · Bulan 2: AI Lanjutan · Bulan 3: Produksi"
-        />
+        <PageHeader title="Roadmap 90 Hari" description="Dari software engineering sampai AI di production" />
         <EmptyState
           title="Kurikulum belum dimuat"
           description="Jalankan `npm run db:seed` untuk mengisi 90 hari kurikulum ke database."
@@ -33,18 +30,11 @@ export default async function RoadmapPage() {
 
   return (
     <div className="space-y-6">
-      <PageHeader
-        title="Roadmap 90 Hari"
-        description="Bulan 1: Fondasi · Bulan 2: AI Lanjutan · Bulan 3: Produksi"
-      />
+      <PageHeader title="Roadmap 90 Hari" description="Dari software engineering sampai AI di production" />
 
       <TodayFocus
-        day={
-          currentDay
-            ? { dayNumber: currentDay.dayNumber, title: currentDay.title, objective: currentDay.objective }
-            : null
-        }
-        weekTitle={currentWeek ? `Minggu ${currentWeek.number} — ${currentWeek.title}` : undefined}
+        day={currentDay ? { dayNumber: currentDay.dayNumber, title: currentDay.title, objective: currentDay.objective } : null}
+        weekTitle={currentWeek ? `Minggu ${currentWeek.number}, ${currentWeek.title}` : undefined}
       />
 
       <div className="space-y-3">

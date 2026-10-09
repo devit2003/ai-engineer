@@ -4,13 +4,7 @@ import { useTransition } from "react";
 import { CheckCircle2 } from "lucide-react";
 import { completeDayAction } from "@/app/roadmap/day/actions";
 
-export function CompleteDayButton({
-  dayNumber,
-  status,
-}: {
-  dayNumber: number;
-  status: string;
-}) {
+export function CompleteDayButton({ dayNumber, status }: { dayNumber: number; status: string }) {
   const [isPending, startTransition] = useTransition();
 
   if (status === "COMPLETED") {

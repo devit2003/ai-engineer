@@ -13,15 +13,12 @@ export default async function SkillsPage() {
     <div>
       <PageHeader
         title="Skill"
-        description="Level skill berbasis bukti — bukan sekadar checklist"
+        description="Level skill berbasis bukti, bukan sekadar checklist"
         action={<AddSkillForm />}
       />
 
       {skills.length === 0 ? (
-        <EmptyState
-          title="Belum ada skill tercatat"
-          description="Tambahkan skill pertamamu lewat tombol di atas."
-        />
+        <EmptyState title="Belum ada skill tercatat" description="Tambahkan skill pertamamu lewat tombol di atas." />
       ) : (
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {skills.map((skill: SkillItem) => (

@@ -29,9 +29,7 @@ export function AddSkillForm() {
       onSubmit={(e) => {
         e.preventDefault();
         if (!name.trim()) return;
-        startTransition(() => {
-          createSkillAction(name, category);
-        });
+        startTransition(() => createSkillAction(name, category));
         setName("");
         setOpen(false);
       }}
@@ -62,11 +60,7 @@ export function AddSkillForm() {
       >
         Simpan
       </button>
-      <button
-        type="button"
-        onClick={() => setOpen(false)}
-        className="text-[13px] text-muted-dim hover:text-foreground"
-      >
+      <button type="button" onClick={() => setOpen(false)} className="text-[13px] text-muted-dim hover:text-foreground">
         Batal
       </button>
     </form>

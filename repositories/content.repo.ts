@@ -1,9 +1,7 @@
 import { prisma } from "@/lib/prisma";
 
 export async function getAllContent() {
-  return prisma.content.findMany({
-    orderBy: { id: "desc" },
-  });
+  return prisma.content.findMany({ orderBy: { id: "desc" } });
 }
 
 export async function createContent(data: { title: string; platform: string }) {
@@ -24,9 +22,6 @@ export async function advanceContentStatus(id: string, currentStatus: string) {
   const status = nextStatus(currentStatus);
   return prisma.content.update({
     where: { id },
-    data: {
-      status: status as never,
-      publishedAt: status === "PUBLISHED" ? new Date() : undefined,
-    },
+    data: { status: status as never, publishedAt: status === "PUBLISHED" ? new Date() : undefined },
   });
 }

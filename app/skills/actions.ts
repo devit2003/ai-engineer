@@ -9,12 +9,7 @@ export async function createSkillAction(name: string, category: string) {
   revalidatePath("/skills");
 }
 
-export async function addEvidenceAction(
-  skillId: string,
-  type: string,
-  description: string,
-  url: string
-) {
+export async function addEvidenceAction(skillId: string, type: string, description: string, url: string) {
   if (!description.trim() && !url.trim()) return;
   await addEvidenceToSkill(skillId, type, description.trim(), url.trim() || undefined);
   revalidatePath(`/skills/${skillId}`);

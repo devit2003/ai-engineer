@@ -17,17 +17,17 @@ model User {
 
 model Month {
   id     String @id @default(cuid())
-  number Int    @unique // 1-3
+  number Int    @unique
   title  String
   weeks  Week[]
 }
 
 model Week {
-  id      String      @id @default(cuid())
-  number  Int         @unique // 1-12
+  id      String        @id @default(cuid())
+  number  Int           @unique
   title   String
   monthId String
-  month   Month       @relation(fields: [monthId], references: [id])
+  month   Month         @relation(fields: [monthId], references: [id])
   days    LearningDay[]
 }
 
@@ -40,7 +40,7 @@ enum DayStatus {
 
 model LearningDay {
   id           String       @id @default(cuid())
-  dayNumber    Int          @unique // 1-90
+  dayNumber    Int          @unique
   title        String
   objective    String
   whyItMatters String
@@ -92,7 +92,7 @@ enum SkillState {
 model Skill {
   id       String           @id @default(cuid())
   name     String           @unique
-  category String // Software Engineering | AI Systems | Production
+  category String
   state    SkillState       @default(NOT_STARTED)
   days     SkillOnDay[]
   projects SkillOnProject[]
@@ -117,17 +117,17 @@ enum ProjectStatus {
 }
 
 model Project {
-  id              String            @id @default(cuid())
+  id              String             @id @default(cuid())
   name            String
   description     String
   businessProblem String
   solution        String
   techStack       String[]
-  status          ProjectStatus     @default(PLANNED)
+  status          ProjectStatus      @default(PLANNED)
   githubUrl       String?
   liveUrl         String?
   userId          String
-  user            User              @relation(fields: [userId], references: [id])
+  user            User               @relation(fields: [userId], references: [id])
   skills          SkillOnProject[]
   milestones      ProjectMilestone[]
   evidence        Evidence[]
@@ -157,7 +157,7 @@ model ProjectMilestone {
 
 model Evidence {
   id          String            @id @default(cuid())
-  type        String // github | demo | article | video | deployment | evaluation
+  type        String
   url         String?
   description String?
   dayId       String?
@@ -207,12 +207,12 @@ model Content {
 }
 
 model Milestone {
-  id                  String    @id @default(cuid())
-  title               String
-  description         String?
-  unlockDayThreshold  Int? // hari ke berapa milestone ini otomatis terbuka
-  unlocked            Boolean   @default(false)
-  unlockedAt          DateTime?
+  id                 String    @id @default(cuid())
+  title              String
+  description        String?
+  unlockDayThreshold Int?
+  unlocked           Boolean   @default(false)
+  unlockedAt         DateTime?
 }
 
 model Progress {
@@ -226,7 +226,7 @@ model Progress {
 
 model Activity {
   id        String   @id @default(cuid())
-  type      String // task_completed | evidence_added | content_published | milestone_unlocked
+  type      String
   message   String
   createdAt DateTime @default(now())
 }

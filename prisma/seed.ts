@@ -372,8 +372,8 @@ async function main() {
     where: { title: { notIn: currentTitles } },
   });
   if (stale.length > 0) {
-    await prisma.milestone.deleteMany({ where: { id: { in: stale.map((m) => m.id) } } });
-    console.log(`Membersihkan ${stale.length} milestone lama: ${stale.map((m) => m.title).join(", ")}`);
+    await prisma.milestone.deleteMany({ where: { id: { in: stale.map((m: { id: string }) => m.id) } } });
+    console.log(`Membersihkan ${stale.length} milestone lama: ${stale.map((m: { title: string }) => m.title).join(", ")}`);
   }
 
   for (const milestone of MILESTONES) {

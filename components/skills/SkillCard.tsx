@@ -20,14 +20,7 @@ const STATE_VARIANT: Record<string, "neutral" | "info" | "warning" | "success"> 
 };
 
 type SkillCardProps = {
-  skill: {
-    id: string;
-    name: string;
-    category: string;
-    state: string;
-    days: unknown[];
-    evidence: unknown[];
-  };
+  skill: { id: string; name: string; category: string; state: string; days: unknown[]; evidence: unknown[] };
 };
 
 export function SkillCard({ skill }: SkillCardProps) {
@@ -44,7 +37,7 @@ export function SkillCard({ skill }: SkillCardProps) {
         <StatusBadge status={STATE_VARIANT[skill.state]}>{STATE_LABEL[skill.state]}</StatusBadge>
       </div>
       <p className="text-[11px] text-muted-dim">
-        {skill.days.length} hari terkait · {skill.evidence.length} bukti
+        {skill.days.length} hari terkait, {skill.evidence.length} bukti
       </p>
     </Link>
   );

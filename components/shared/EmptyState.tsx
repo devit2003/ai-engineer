@@ -1,7 +1,4 @@
-type EmptyStateProps = {
-  title: string;
-  description: string;
-};
+type EmptyStateProps = { title: string; description: string };
 
 export function EmptyState({ title, description }: EmptyStateProps) {
   return (

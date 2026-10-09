@@ -14,13 +14,7 @@ type RoadmapMonthProps = {
       id: string;
       number: number;
       title: string;
-      days: {
-        id: string;
-        dayNumber: number;
-        title: string;
-        status: string;
-        tasks: { completed: boolean }[];
-      }[];
+      days: { id: string; dayNumber: number; title: string; status: string; tasks: { completed: boolean }[] }[];
     }[];
   };
   defaultOpen?: boolean;
@@ -33,34 +27,24 @@ export function RoadmapMonth({ month, defaultOpen = false }: RoadmapMonthProps) 
   const hasCurrentWeek = month.weeks.some((w) => w.days.some((d) => d.status === "CURRENT"));
 
   const positionLabel = stats.isComplete
-    ? `${stats.totalDays} dari ${stats.totalDays} hari · Selesai`
+    ? `${stats.totalDays} dari ${stats.totalDays} hari, selesai`
     : stats.hasStarted
       ? `Hari ${stats.position} dari ${stats.totalDays}`
-      : `Belum dimulai · ${stats.totalDays} hari`;
+      : `Belum dimulai, ${stats.totalDays} hari`;
 
   return (
     <div className="overflow-hidden rounded-lg border border-border bg-surface">
-      <button
-        onClick={() => setOpen(!open)}
-        className="flex w-full items-center justify-between px-5 py-4 text-left"
-      >
+      <button onClick={() => setOpen(!open)} className="flex w-full items-center justify-between px-5 py-4 text-left">
         <div className="flex items-center gap-3">
-          <ChevronDown
-            size={16}
-            className={`text-muted-dim transition-transform ${open ? "rotate-0" : "-rotate-90"}`}
-          />
+          <ChevronDown size={16} className={`text-muted-dim transition-transform ${open ? "rotate-0" : "-rotate-90"}`} />
           <div>
             <p className="text-[15px] font-semibold text-foreground">
               Bulan {month.number} — {month.title}
             </p>
-            <p className={`text-[11px] ${hasCurrentWeek ? "text-accent" : "text-muted-dim"}`}>
-              {positionLabel}
-            </p>
+            <p className={`text-[11px] ${hasCurrentWeek ? "text-accent" : "text-muted-dim"}`}>{positionLabel}</p>
           </div>
         </div>
-        {stats.hasStarted && (
-          <span className="text-[12px] font-medium text-muted-dim">{progress}%</span>
-        )}
+        {stats.hasStarted && <span className="text-[12px] font-medium text-muted-dim">{progress}%</span>}
       </button>
 
       {open && (

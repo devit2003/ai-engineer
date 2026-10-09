@@ -28,10 +28,7 @@ export async function createProjectAction(data: {
     description: data.description.trim(),
     businessProblem: data.businessProblem.trim(),
     solution: data.solution.trim(),
-    techStack: data.techStack
-      .split(",")
-      .map((s) => s.trim())
-      .filter(Boolean),
+    techStack: data.techStack.split(",").map((s) => s.trim()).filter(Boolean),
   });
   revalidatePath("/projects");
 }

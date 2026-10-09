@@ -1,5 +1,5 @@
 type ProgressBarProps = {
-  value: number; // 0-100
+  value: number;
   label?: string;
   className?: string;
 };

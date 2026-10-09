@@ -99,9 +99,7 @@ export function ContentKanban({ items }: { items: ContentItem[] }) {
                       {item.status !== "PUBLISHED" && (
                         <button
                           disabled={isPending}
-                          onClick={() =>
-                            startTransition(() => advanceContentStatusAction(item.id, item.status))
-                          }
+                          onClick={() => startTransition(() => advanceContentStatusAction(item.id, item.status))}
                           className="flex items-center gap-1 text-[10px] text-accent hover:underline disabled:opacity-50"
                         >
                           Lanjut
@@ -111,9 +109,7 @@ export function ContentKanban({ items }: { items: ContentItem[] }) {
                     </div>
                   </div>
                 ))}
-                {colItems.length === 0 && (
-                  <p className="text-[11px] text-muted-dim">Kosong</p>
-                )}
+                {colItems.length === 0 && <p className="text-[11px] text-muted-dim">Kosong</p>}
               </div>
             </div>
           );

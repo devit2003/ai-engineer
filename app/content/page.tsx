@@ -7,10 +7,7 @@ export default async function ContentPage() {
 
   return (
     <div>
-      <PageHeader
-        title="Konten"
-        description="Perencanaan Build-in-Public — Ide → Draf → Siap → Terbit"
-      />
+      <PageHeader title="Konten" description="Perencanaan build in public: ide, draf, siap, terbit" />
       <ContentKanban items={items} />
     </div>
   );

@@ -19,37 +19,29 @@ export function EditableDayFields({ dayId, dayNumber, objective, whyItMatters }:
 
   if (!editing) {
     return (
-      <>
+      <div className="space-y-5">
         <div className="rounded-lg border border-border bg-surface p-5">
           <div className="mb-2 flex items-center justify-between">
             <p className="text-[12px] font-medium text-muted">Objektif</p>
-            <button
-              onClick={() => setEditing(true)}
-              className="flex items-center gap-1 text-[11px] text-muted-dim hover:text-accent"
-            >
+            <button onClick={() => setEditing(true)} className="flex items-center gap-1 text-[11px] text-muted-dim hover:text-accent">
               <Pencil size={11} />
               Edit
             </button>
           </div>
-          <p className="text-[13px] text-muted-dim">
-            {objective || "Belum diisi — klik Edit untuk menuliskannya."}
-          </p>
+          <p className="text-[13px] text-muted-dim">{objective || "Belum diisi. Klik Edit untuk menuliskannya."}</p>
         </div>
 
-        <div className="mt-5 rounded-lg border border-border bg-surface p-5">
+        <div className="rounded-lg border border-border bg-surface p-5">
           <div className="mb-2 flex items-center justify-between">
-            <p className="text-[12px] font-medium text-muted">Mengapa Ini Penting</p>
-            <button
-              onClick={() => setEditing(true)}
-              className="flex items-center gap-1 text-[11px] text-muted-dim hover:text-accent"
-            >
+            <p className="text-[12px] font-medium text-muted">Mengapa ini penting</p>
+            <button onClick={() => setEditing(true)} className="flex items-center gap-1 text-[11px] text-muted-dim hover:text-accent">
               <Pencil size={11} />
               Edit
             </button>
           </div>
           <p className="text-[13px] text-muted-dim">{whyItMatters || "Belum diisi."}</p>
         </div>
-      </>
+      </div>
     );
   }
 
@@ -67,7 +59,7 @@ export function EditableDayFields({ dayId, dayNumber, objective, whyItMatters }:
           />
         </div>
         <div>
-          <label className="mb-1.5 block text-[12px] font-medium text-muted">Mengapa Ini Penting</label>
+          <label className="mb-1.5 block text-[12px] font-medium text-muted">Mengapa ini penting</label>
           <textarea
             value={whyValue}
             onChange={(e) => setWhyValue(e.target.value)}

@@ -2,12 +2,7 @@ import Link from "next/link";
 import { Lock, Check } from "lucide-react";
 
 type RoadmapDayProps = {
-  day: {
-    id: string;
-    dayNumber: number;
-    title: string;
-    status: string;
-  };
+  day: { id: string; dayNumber: number; title: string; status: string };
 };
 
 export function RoadmapDay({ day }: RoadmapDayProps) {
@@ -29,18 +24,12 @@ export function RoadmapDay({ day }: RoadmapDayProps) {
     <Link
       href={`/roadmap/day/${day.dayNumber}`}
       className={`flex items-start gap-2.5 rounded-md px-3 py-2 text-[13px] transition-colors ${
-        isCurrent
-          ? "bg-accent-soft text-foreground"
-          : "text-muted hover:bg-surface-hover hover:text-foreground"
+        isCurrent ? "bg-accent-soft text-foreground" : "text-muted hover:bg-surface-hover hover:text-foreground"
       }`}
     >
       <span
         className={`mt-0.5 flex h-4 w-4 flex-shrink-0 items-center justify-center rounded-full border ${
-          isCompleted
-            ? "border-success bg-success"
-            : isCurrent
-              ? "border-accent"
-              : "border-border-strong"
+          isCompleted ? "border-success bg-success" : isCurrent ? "border-accent" : "border-border-strong"
         }`}
       >
         {isCompleted && <Check size={11} className="text-white" strokeWidth={3} />}
@@ -50,9 +39,7 @@ export function RoadmapDay({ day }: RoadmapDayProps) {
           <span className="text-muted-dim">Hari {day.dayNumber}</span>{" "}
           <span className={isCompleted ? "text-muted-dim line-through" : ""}>{day.title}</span>
         </span>
-        {isCurrent && (
-          <span className="mt-0.5 block text-[11px] text-accent">Belajar • Praktik • Bangun</span>
-        )}
+        {isCurrent && <span className="mt-0.5 block text-[11px] text-accent">Belajar • Praktik • Bangun</span>}
       </span>
     </Link>
   );

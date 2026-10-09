@@ -1,4 +1,6 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
 import { PageHeader } from "@/components/shared/PageHeader";
 import { Card } from "@/components/ui/Card";
 import { StatusBadge } from "@/components/ui/StatusBadge";
@@ -15,8 +17,8 @@ type Evidence = DayDetail["evidence"][number];
 
 const STATUS_LABEL: Record<string, string> = {
   LOCKED: "Terkunci",
-  UPCOMING: "Akan Datang",
-  CURRENT: "Sedang Berjalan",
+  UPCOMING: "Akan datang",
+  CURRENT: "Sedang berjalan",
   COMPLETED: "Selesai",
 };
 
@@ -39,9 +41,17 @@ export default async function RoadmapDayPage({ params }: { params: Promise<{ id:
 
   return (
     <div className="space-y-5">
+      <Link
+        href="/roadmap"
+        className="inline-flex items-center gap-1.5 text-[13px] text-muted-dim transition-colors hover:text-foreground"
+      >
+        <ArrowLeft size={14} />
+        Kembali ke Roadmap
+      </Link>
+
       <PageHeader
-        title={`Hari ${day.dayNumber} — ${day.title}`}
-        description={`${day.week.month.title} · Minggu ${day.week.number} — ${day.week.title}`}
+        title={`Hari ${day.dayNumber}: ${day.title}`}
+        description={`${day.week.month.title}, Minggu ${day.week.number} (${day.week.title})`}
         action={<CompleteDayButton dayNumber={day.dayNumber} status={day.status} />}
       />
 
@@ -61,10 +71,7 @@ export default async function RoadmapDayPage({ params }: { params: Promise<{ id:
           <p className="mb-3 text-[12px] font-medium text-muted">Topik</p>
           <ul className="flex flex-wrap gap-2">
             {day.topics.map((topic: Topic) => (
-              <li
-                key={topic.id}
-                className="rounded-full border border-border px-3 py-1 text-[12px] text-muted"
-              >
+              <li key={topic.id} className="rounded-full border border-border px-3 py-1 text-[12px] text-muted">
                 {topic.name}
               </li>
             ))}
@@ -97,7 +104,7 @@ export default async function RoadmapDayPage({ params }: { params: Promise<{ id:
       )}
 
       <Card className="p-5">
-        <p className="mb-3 text-[12px] font-medium text-muted">Bukti Skill</p>
+        <p className="mb-3 text-[12px] font-medium text-muted">Bukti skill</p>
         {day.evidence.length > 0 && (
           <ul className="mb-4 space-y-1.5">
             {day.evidence.map((ev: Evidence) => (

@@ -7,7 +7,6 @@ import { NAV_ITEMS } from "@/lib/nav";
 
 const ICONS: Record<string, LucideIcon> = { home: Home, map: Map, layers: Layers, folder: Folder, megaphone: Megaphone };
 
-// Ringkas ke 5 item utama untuk bottom nav mobile
 const MOBILE_ITEMS = NAV_ITEMS.slice(0, 5);
 
 export function MobileNav() {

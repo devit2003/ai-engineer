@@ -11,8 +11,8 @@ model User {
   id        String     @id @default(cuid())
   name      String
   createdAt DateTime   @default(now())
-  projects  Project[]
   progress  Progress[]
+  projects  Project[]
 }
 
 model Month {
@@ -27,15 +27,8 @@ model Week {
   number  Int           @unique
   title   String
   monthId String
-  month   Month         @relation(fields: [monthId], references: [id])
   days    LearningDay[]
-}
-
-enum DayStatus {
-  LOCKED
-  UPCOMING
-  CURRENT
-  COMPLETED
+  month   Month         @relation(fields: [monthId], references: [id])
 }
 
 model LearningDay {
@@ -46,13 +39,13 @@ model LearningDay {
   whyItMatters String
   status       DayStatus    @default(LOCKED)
   weekId       String
-  week         Week         @relation(fields: [weekId], references: [id])
-  topics       Topic[]
-  tasks        Task[]
-  resources    Resource[]
-  skills       SkillOnDay[]
   content      Content[]
   evidence     Evidence[]
+  week         Week         @relation(fields: [weekId], references: [id])
+  resources    Resource[]
+  skills       SkillOnDay[]
+  tasks        Task[]
+  topics       Topic[]
 }
 
 model Topic {
@@ -67,8 +60,8 @@ model Task {
   label       String
   completed   Boolean           @default(false)
   dayId       String?
-  day         LearningDay?      @relation(fields: [dayId], references: [id], onDelete: Cascade)
   milestoneId String?
+  day         LearningDay?      @relation(fields: [dayId], references: [id], onDelete: Cascade)
   milestone   ProjectMilestone? @relation(fields: [milestoneId], references: [id], onDelete: Cascade)
 }
 
@@ -80,40 +73,24 @@ model Resource {
   day   LearningDay @relation(fields: [dayId], references: [id], onDelete: Cascade)
 }
 
-enum SkillState {
-  NOT_STARTED
-  LEARNING
-  PRACTICED
-  BUILT
-  EVALUATED
-  MASTERED
-}
-
 model Skill {
   id       String           @id @default(cuid())
   name     String           @unique
   category String
   state    SkillState       @default(NOT_STARTED)
+  content  Content[]
+  evidence Evidence[]
   days     SkillOnDay[]
   projects SkillOnProject[]
-  evidence Evidence[]
-  content  Content[]
 }
 
 model SkillOnDay {
   skillId String
   dayId   String
-  skill   Skill       @relation(fields: [skillId], references: [id], onDelete: Cascade)
   day     LearningDay @relation(fields: [dayId], references: [id], onDelete: Cascade)
+  skill   Skill       @relation(fields: [skillId], references: [id], onDelete: Cascade)
 
   @@id([skillId, dayId])
-}
-
-enum ProjectStatus {
-  PLANNED
-  IN_PROGRESS
-  TESTING
-  SHIPPED
 }
 
 model Project {
@@ -127,18 +104,18 @@ model Project {
   githubUrl       String?
   liveUrl         String?
   userId          String
-  user            User               @relation(fields: [userId], references: [id])
-  skills          SkillOnProject[]
-  milestones      ProjectMilestone[]
-  evidence        Evidence[]
   content         Content[]
+  evidence        Evidence[]
+  user            User               @relation(fields: [userId], references: [id])
+  milestones      ProjectMilestone[]
+  skills          SkillOnProject[]
 }
 
 model SkillOnProject {
   skillId   String
   projectId String
-  skill     Skill   @relation(fields: [skillId], references: [id], onDelete: Cascade)
   project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  skill     Skill   @relation(fields: [skillId], references: [id], onDelete: Cascade)
 
   @@id([skillId, projectId])
 }
@@ -150,9 +127,9 @@ model ProjectMilestone {
   completed Boolean    @default(false)
   notes     String?
   projectId String
+  evidence  Evidence[]
   project   Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
   tasks     Task[]
-  evidence  Evidence[]
 }
 
 model Evidence {
@@ -161,28 +138,14 @@ model Evidence {
   url         String?
   description String?
   dayId       String?
-  day         LearningDay?      @relation(fields: [dayId], references: [id])
   skillId     String?
-  skill       Skill?            @relation(fields: [skillId], references: [id])
   projectId   String?
-  project     Project?          @relation(fields: [projectId], references: [id])
   milestoneId String?
-  milestone   ProjectMilestone? @relation(fields: [milestoneId], references: [id])
   createdAt   DateTime          @default(now())
-}
-
-enum Platform {
-  TIKTOK
-  INSTAGRAM
-  LINKEDIN
-  YOUTUBE
-}
-
-enum ContentStatus {
-  IDEA
-  DRAFT
-  READY
-  PUBLISHED
+  day         LearningDay?      @relation(fields: [dayId], references: [id])
+  milestone   ProjectMilestone? @relation(fields: [milestoneId], references: [id])
+  project     Project?          @relation(fields: [projectId], references: [id])
+  skill       Skill?            @relation(fields: [skillId], references: [id])
 }
 
 model Content {
@@ -199,29 +162,29 @@ model Content {
   url         String?
   notes       String?
   dayId       String?
-  day         LearningDay?  @relation(fields: [dayId], references: [id])
   skillId     String?
-  skill       Skill?        @relation(fields: [skillId], references: [id])
   projectId   String?
+  day         LearningDay?  @relation(fields: [dayId], references: [id])
   project     Project?      @relation(fields: [projectId], references: [id])
+  skill       Skill?        @relation(fields: [skillId], references: [id])
 }
 
 model Milestone {
   id                 String    @id @default(cuid())
   title              String
   description        String?
-  unlockDayThreshold Int?
   unlocked           Boolean   @default(false)
   unlockedAt         DateTime?
+  unlockDayThreshold Int?
 }
 
 model Progress {
   id        String   @id @default(cuid())
   userId    String
-  user      User     @relation(fields: [userId], references: [id])
   date      DateTime @default(now())
   dayNumber Int
   note      String?
+  user      User     @relation(fields: [userId], references: [id])
 }
 
 model Activity {
@@ -229,4 +192,41 @@ model Activity {
   type      String
   message   String
   createdAt DateTime @default(now())
+}
+
+enum DayStatus {
+  LOCKED
+  UPCOMING
+  CURRENT
+  COMPLETED
+}
+
+enum SkillState {
+  NOT_STARTED
+  LEARNING
+  PRACTICED
+  BUILT
+  EVALUATED
+  MASTERED
+}
+
+enum ProjectStatus {
+  PLANNED
+  IN_PROGRESS
+  TESTING
+  SHIPPED
+}
+
+enum Platform {
+  TIKTOK
+  INSTAGRAM
+  LINKEDIN
+  YOUTUBE
+}
+
+enum ContentStatus {
+  IDEA
+  DRAFT
+  READY
+  PUBLISHED
 }
